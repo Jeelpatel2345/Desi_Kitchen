@@ -87,7 +87,6 @@ class _BillingScreenState extends State<BillingScreen> {
                   /// PAYMENT METHODS
                   Consumer<PaymentProvider>(
                     builder: (context, paymentProvider, child) {
-
                       final methods = paymentProvider.paymentMethods;
 
                       return Column(
@@ -97,7 +96,7 @@ class _BillingScreenState extends State<BillingScreen> {
                           const Text(
                             "Payment Method",
                             style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -105,7 +104,6 @@ class _BillingScreenState extends State<BillingScreen> {
                           const SizedBox(height: 10),
 
                           ...methods.map((method) {
-
                             final isSelected =
                                 paymentProvider.selectedMethod == method['name'];
 
@@ -128,21 +126,27 @@ class _BillingScreenState extends State<BillingScreen> {
                                     width: isSelected ? 2 : 1,
                                   ),
                                 ),
+
                                 child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
 
+                                    // Left Icon
                                     Icon(
-                                      method['icon'] as IconData,
+                                      method['icon'],
                                       color: method['color'],
+                                      size: 22,
                                     ),
 
-                                    const SizedBox(width: 12),
+                                    const SizedBox(width: 8),
 
-                                    Flexible(
+                                    // Text Section
+                                    Expanded(
                                       child: Text(
-                                        method['name'] as String,
+                                        method['name'],
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
+                                        softWrap: true,
                                         style: TextStyle(
                                           fontWeight:
                                           isSelected ? FontWeight.bold : FontWeight.normal,
@@ -150,9 +154,9 @@ class _BillingScreenState extends State<BillingScreen> {
                                       ),
                                     ),
 
+                                    const SizedBox(width: 8),
 
-                                    const SizedBox(width: 6),
-
+                                    // Check Icon (only if selected)
                                     if (isSelected)
                                       const Icon(
                                         Icons.check_circle,
@@ -163,13 +167,11 @@ class _BillingScreenState extends State<BillingScreen> {
                                 ),
                               ),
                             );
-
                           }).toList(),
                         ],
                       );
                     },
                   ),
-
                   const SizedBox(height: 15),
 
                   /// PLACE ORDER BUTTON

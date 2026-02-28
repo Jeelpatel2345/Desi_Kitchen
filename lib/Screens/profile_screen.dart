@@ -25,8 +25,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // payment options list
   final List<Map<String, dynamic>> _paymentMethods = [
-    {'name': 'UPI/PhonePe', 'icon': Icons.mobile_friendly, 'color': Colors.purple},
-    {'name': 'Paytm', 'icon': Icons.account_balance_wallet, 'color': Colors.lightBlue},
+    {'name': 'UPI/Paytm', 'icon': Icons.mobile_friendly, 'color': Colors.purple},
+    {'name': 'Cash', 'icon': Icons.account_balance_wallet, 'color': Colors.lightBlue},
     {'name': 'Credit Card', 'icon': Icons.credit_card, 'color': Colors.orange},
     {'name': 'Debit Card', 'icon': Icons.card_membership, 'color': Colors.teal},
     {'name': 'Net Banking', 'icon': Icons.account_balance, 'color': Colors.indigo},
