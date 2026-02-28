@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "104670809650",
+    "project_id": "desi-kitchen-56193",
+    "storage_bucket": "desi-kitchen-56193.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104670809650:android:aabdd11fcad0907e02b62b",
+        "android_client_info": {
+          "package_name": "com.example.desi_kitchen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDohp04ocHZjtokas9vbAqyB25gyUuORMQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
