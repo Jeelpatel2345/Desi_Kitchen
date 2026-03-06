@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:desi_kitchen/payment_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class ProfileScreen extends StatefulWidget {
@@ -23,6 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _profileSaved = false;
 
 
+
   // payment options list
   final List<Map<String, dynamic>> _paymentMethods = [
     {'name': 'UPI/Paytm', 'icon': Icons.mobile_friendly, 'color': Colors.purple},
@@ -31,6 +34,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
     {'name': 'Debit Card', 'icon': Icons.card_membership, 'color': Colors.teal},
     {'name': 'Net Banking', 'icon': Icons.account_balance, 'color': Colors.indigo},
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+  Future<void> _loadProfile() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    // Auto fill phone from Firebase login
+    if (user.phoneNumber != null) {
+      _phoneCtrl.text = user.phoneNumber!.replaceAll('+91', '');
+    }
+
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+
+    if (doc.exists) {
+      setState(() {
+        _firstNameCtrl.text = doc['firstName'] ?? '';
+        _lastNameCtrl.text = doc['lastName'] ?? '';
+        _emailCtrl.text = doc['email'] ?? '';
+        _profileSaved = true;
+      });
+
+      // Also restore selected payment method
+      final savedPayment = doc['paymentMethod'];
+      if (savedPayment != null) {
+        Provider.of<PaymentProvider>(context, listen: false)
+            .changeMethod(savedPayment);
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -54,11 +93,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   // ─── Save profile ───────────────────────────────────────────
-  void _saveProfile(BuildContext ctx) {
+  Future<void> _saveProfile(BuildContext ctx) async {
     final first = _firstNameCtrl.text.trim();
     final last = _lastNameCtrl.text.trim();
     final phone = _phoneCtrl.text.trim();
     final email = _emailCtrl.text.trim();
+
 
     if (first.isEmpty || last.isEmpty) {
       ScaffoldMessenger.of(ctx).showSnackBar(
@@ -66,12 +106,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
       return;
     }
+
     if (phone.length != 10) {
       ScaffoldMessenger.of(ctx).showSnackBar(
-        _snackBar('Please enter a valid 10‑digit phone number'),
+        _snackBar('Please enter a valid 10-digit phone number'),
       );
       return;
     }
+
     if (email.isNotEmpty && !_validateEmail()) {
       ScaffoldMessenger.of(ctx).showSnackBar(
         _snackBar('Please enter a valid email address'),
@@ -79,8 +121,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return;
     }
 
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final selectedPayment =
+        Provider.of<PaymentProvider>(ctx, listen: false).selectedMethod;
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .set({
+      'firstName': first,
+      'lastName': last,
+      'phone': phone,
+      'email': email,
+      'paymentMethod': selectedPayment,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+
     setState(() {
-      _profileSaved = true;
     });
 
     ScaffoldMessenger.of(ctx).showSnackBar(
@@ -89,7 +148,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
         backgroundColor: Colors.green.shade700,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
     );
   }
@@ -261,7 +322,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(height: sh * 0.012),
             // Name below avatar
             Text(
-              _profileSaved && first.isNotEmpty
+              first.isNotEmpty
                   ? '$first $last'
                   : 'Your Name',
               style: TextStyle(
@@ -272,7 +333,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             // Phone below name
             Text(
-              _profileSaved && _phoneCtrl.text.trim().isNotEmpty
+              _phoneCtrl.text.trim().isNotEmpty
                   ? '+91 ${_phoneCtrl.text.trim()}'
                   : 'Add phone number',
               style: TextStyle(

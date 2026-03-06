@@ -222,14 +222,13 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           _buildCategoryCard(
                             context,
-                            'Chinese',
-                            Icons.ramen_dining,
-                            Colors.red.shade100,
-                            Colors.red,
+                            'Drinks',
+                            Icons.local_drink,
+                            Colors.blue.shade100,
+                            Colors.blue,
                             screenWidth,
                             screenHeight,
-                            0,
-
+                            3,
                           ),
                           _buildCategoryCard(
                             context,
@@ -239,7 +238,7 @@ class HomeScreen extends StatelessWidget {
                             Colors.green,
                             screenWidth,
                             screenHeight,
-                            1,
+                            0,
 
                           ),
                         ],
@@ -259,7 +258,7 @@ class HomeScreen extends StatelessWidget {
                             Colors.orange,
                             screenWidth,
                             screenHeight,
-                            2,
+                            1,
                           ),
                           _buildCategoryCard(
                             context,
@@ -269,7 +268,7 @@ class HomeScreen extends StatelessWidget {
                             Colors.pink,
                             screenWidth,
                             screenHeight,
-                            3,
+                            2,
                           ),
                         ],
                       ),
@@ -324,11 +323,11 @@ class HomeScreen extends StatelessWidget {
                     ),
                     _buildDishCard(
                       context,
-                      'Veg Manchurian',
-                      '₹140',
+                      'Masala chaas',
+                      '₹30',
                       '⭐ 4.8',
                       true,
-                      'assets/home/veg manchurian.jpg',
+                      'assets/drink/masala chaas.jpg',
                       screenWidth,
                       screenHeight,
                     ),

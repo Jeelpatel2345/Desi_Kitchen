@@ -15,11 +15,15 @@ dependencies:
   provider: ^6.1.5+1
   mobile_scanner: ^3.5.2
 
-  # 🔥 Firebase
-
-
   firebase_core: ^2.30.0
   firebase_auth: ^4.17.0
+  cloud_firestore: ^4.17.5
+
+  qr_flutter: ^4.1.0
+  url_launcher: ^6.1.14
+
+  # For video splash screen
+  video_player: ^2.8.6
 
 dev_dependencies:
   flutter_test:
@@ -38,6 +42,8 @@ flutter:
     - assets/desert/
     - assets/drink/
     - assets/home/
+    - assets/images/
+    - assets/video/   # ← add this for splash video
 
 flutter_launcher_icons:
   android: true

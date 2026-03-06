@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.example.desi_kitchen"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.desi_kitchen"
         minSdk = flutter.minSdkVersion
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
     }
@@ -28,6 +28,8 @@ android {
 
     buildTypes {
         release {
+            isMinifyEnabled = true
+            isShrinkResources = true
             signingConfig = signingConfigs.getByName("debug")
         }
     }
