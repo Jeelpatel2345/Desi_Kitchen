@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Opening Desi Kitchen</title>
+
+    <script>
+        function openApp() {
+
+          var deepLink = "https://desi-kitchen-56193.web.app/table/5";
+
+          // Try to open app
+          window.location.href = deepLink;
+
+          // If app not installed → open website
+          setTimeout(function() {
+              window.location.href = "https://desi-kitchen-56193.web.app";
+          }, 2000);
+        }
+    </script>
+
+</head>
+
+<body onload="openApp()">
+
+<h2>Opening Desi Kitchen...</h2>
+
+</body>
+</html>

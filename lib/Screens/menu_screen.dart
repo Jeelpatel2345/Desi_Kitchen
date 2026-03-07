@@ -1903,31 +1903,25 @@ class _MenuScreenState extends State<MenuScreen>
                             const EdgeInsets.all(4),
                             constraints:
                             const BoxConstraints(),
-                            onPressed: () {
-                              var cart =
-                              Provider.of<CartProvider>(
-                                  context,
-                                  listen: false);
+                            onPressed: () async {
 
-                              cart.addItem({
+                              var cart = Provider.of<CartProvider>(context, listen: false);
+
+                              await cart.addItem({
                                 'name': item['name'],
                                 'price': item['price'],
-                                'category':
-                                item['category'],
+                                'category': item['category'],
                               });
 
-                              ScaffoldMessenger.of(
-                                  context)
-                                  .showSnackBar(
+                              ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(
-                                      '${item['name']} added to cart'),
-                                  duration:
-                                  const Duration(
-                                      seconds: 1),
+                                  content: Text('${item['name']} added to cart'),
+                                  duration: const Duration(seconds: 1),
                                 ),
                               );
+
                             },
+
                           ),
                         ),
                       ],

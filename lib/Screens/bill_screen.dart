@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:desi_kitchen/payment_provider.dart';
 import 'package:desi_kitchen/Screens/cart_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:desi_kitchen/Services/table_service.dart';
 
 class BillingScreen extends StatefulWidget {
   const BillingScreen({Key? key}) : super(key: key);
@@ -15,7 +17,7 @@ class _BillingScreenState extends State<BillingScreen> {
 
   /// 🔹 UPI LAUNCH FUNCTION
   Future<void> _launchUPI(double amount) async {
-    final upiId = "yourupi@oksbi"; // change this
+    final upiId = "yourupi@oksbi";
     final name = "Desi Kitchen";
 
     final uri = Uri.parse(
@@ -188,25 +190,31 @@ class _BillingScreenState extends State<BillingScreen> {
                         : () async {
 
                       final paymentProvider =
-                      Provider.of<PaymentProvider>(
-                          context,
-                          listen: false);
+                      Provider.of<PaymentProvider>(context, listen: false);
 
-                      if (paymentProvider
-                          .selectedMethod.isEmpty) {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(
+                      if (paymentProvider.selectedMethod.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text(
-                                "Please select payment method"),
+                            content: Text("Please select payment method"),
                           ),
                         );
                         return;
                       }
+
+                      /// 🔥 STEP 1: SAVE ORDER FIRST
+                      final orderRef = await FirebaseFirestore.instance.collection("orders").add({
+                        "tableNumber": TableService.tableNumber,
+                        "items": cartItems.map((item) => item['name']).toList(),
+                        "totalPrice": total,
+                        "paymentMethod": paymentProvider.selectedMethod,
+                        "status": "pending",
+                        "time": Timestamp.now(),
+                      });
+
+                      /// 🔥 STEP 2: OPEN PAYMENT
                       if (paymentProvider.selectedMethod.contains("UPI")) {
                         await _launchUPI(total);
 
-                        // Ask user if payment completed
                         bool? confirmed = await showDialog<bool>(
                           context: context,
                           builder: (context) {
@@ -228,10 +236,20 @@ class _BillingScreenState extends State<BillingScreen> {
                         );
 
                         if (confirmed != true) return;
+
+                        /// 🔥 STEP 3: UPDATE ORDER STATUS
+                        await FirebaseFirestore.instance
+                            .collection("orders")
+                            .doc(orderRef.id)
+                            .update({
+                          "status": "paid",
+                        });
                       }
 
+                      /// 🔥 STEP 4: CLEAR CART
                       cart.clearCart();
 
+                      /// 🔥 STEP 5: SUCCESS DIALOG
                       _showStyledSuccessDialog(
                         context,
                         total,
@@ -254,7 +272,7 @@ class _BillingScreenState extends State<BillingScreen> {
     );
   }
 
-  /// SUCCESS DIALOG (SECOND IMAGE STYLE)
+  /// SUCCESS DIALOG
   void _showStyledSuccessDialog(
       BuildContext context,
       double total,

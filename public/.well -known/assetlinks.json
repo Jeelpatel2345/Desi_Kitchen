@@ -1,0 +1,12 @@
+[
+{
+"relation": ["delegate_permission/common.handle_all_urls"],
+"target": {
+"namespace": "android_app",
+"package_name": "com.example.desi_kitchen",
+"sha256_cert_fingerprints": [
+"52:02:e6:e3:13:53:ef:95:7b:8f:c6:ee:e9:55:7c:b6:89:37:39:4b:68:22:5e:b0:33:4c:b3:9f:e2:be:81:98"
+]
+}
+}
+]

@@ -90,8 +90,8 @@ class _SplashScreenState extends State<SplashScreen>
               opacity: _fadeAnimation,
               child: _videoController.value.isInitialized
                   ? Container(
-                width: screenWidth * 0.35,
-                height: screenWidth * 0.35,
+                width: screenWidth * 0.39,
+                height: screenWidth * 0.39,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.white,

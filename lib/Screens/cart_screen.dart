@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'cart_provider.dart';
 import 'bill_screen.dart';
-
+import 'package:desi_kitchen/Services/notification_service.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -20,6 +20,7 @@ class _CartScreenState extends State<CartScreen>
   @override
   void initState() {
     super.initState();
+
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
@@ -63,8 +64,24 @@ class _CartScreenState extends State<CartScreen>
     );
   }
 
+  void _confirmOrder() {
+
+    /// 🔔 SHOW NOTIFICATION
+    NotificationService.showNotification(
+      "Order Confirmed 🍽️",
+      "Your order is confirmed. It will arrive at your table soon.",
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Order Confirmed Successfully"),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+
     final cart = Provider.of<CartProvider>(context);
     final cartItems = cart.items;
 
@@ -77,7 +94,7 @@ class _CartScreenState extends State<CartScreen>
         child: Column(
           children: [
 
-            // HEADER
+            /// HEADER
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(sw * 0.04),
@@ -120,7 +137,7 @@ class _CartScreenState extends State<CartScreen>
               ),
             ),
 
-            // CART ITEMS
+            /// CART ITEMS
             Expanded(
               child: cartItems.isEmpty
                   ? Center(
@@ -149,31 +166,54 @@ class _CartScreenState extends State<CartScreen>
               ),
             ),
 
-            // ✅ BILLING BUTTON
+            /// BUTTONS
             if (cartItems.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      backgroundColor: Colors.orange,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BillingScreen(
-                          ),
+                child: Column(
+                  children: [
+
+                    /// CONFIRM ORDER BUTTON
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          backgroundColor: Colors.green,
                         ),
-                      );
-                    },
-                    child: const Text(
-                      "Go To Billing",
-                      style: TextStyle(fontSize: 18),
+                        onPressed: _confirmOrder,
+                        child: const Text(
+                          "Confirm Order",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
                     ),
-                  ),
+
+                    const SizedBox(height: 10),
+
+                    /// GO TO BILLING BUTTON
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          backgroundColor: Colors.orange,
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const BillingScreen(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Go To Billing",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
           ],
