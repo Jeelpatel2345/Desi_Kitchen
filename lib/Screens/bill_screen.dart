@@ -212,49 +212,75 @@ class _BillingScreenState extends State<BillingScreen> {
                       });
 
                       /// 🔥 STEP 2: OPEN PAYMENT
-                      if (paymentProvider.selectedMethod.contains("UPI")) {
-                        await _launchUPI(total);
+    if (paymentProvider.selectedMethod.contains("UPI")) {
 
-                        bool? confirmed = await showDialog<bool>(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text("Payment Confirmation"),
-                              content: const Text("Did you complete the payment?"),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context, false),
-                                  child: const Text("No"),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () => Navigator.pop(context, true),
-                                  child: const Text("Yes"),
-                                ),
-                              ],
+    /// OPEN UPI APP
+    await _launchUPI(total);
+
+    /// WAIT UNTIL USER RETURNS
+    await Future.delayed(const Duration(seconds: 2));
+    bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: const Text("Payment Confirmation"),
+          content: const Text("Did you complete the payment?"),
+          actions: [
+
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: const Text(
+                "No",
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
+
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () => Navigator.pop(dialogContext, true),
+              child: const Text("Yes"),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed != true) return;
+
+    {
+                            await FirebaseFirestore.instance
+                                .collection("orders")
+                                .doc(orderRef.id)
+                                .update({
+                              "status": "paid",
+                            });
+
+                            cart.clearCart();
+
+                            _showStyledSuccessDialog(
+                              context,
+                              total,
+                              paymentProvider.selectedMethod,
                             );
-                          },
-                        );
 
-                        if (confirmed != true) return;
-
-                        /// 🔥 STEP 3: UPDATE ORDER STATUS
-                        await FirebaseFirestore.instance
-                            .collection("orders")
-                            .doc(orderRef.id)
-                            .update({
-                          "status": "paid",
-                        });
+                        }
                       }
 
-                      /// 🔥 STEP 4: CLEAR CART
-                      cart.clearCart();
-
                       /// 🔥 STEP 5: SUCCESS DIALOG
-                      _showStyledSuccessDialog(
-                        context,
-                        total,
-                        paymentProvider.selectedMethod,
-                      );
+                      Future.microtask(() {
+                        _showStyledSuccessDialog(
+                          context,
+                          total,
+                          paymentProvider.selectedMethod,
+                        );
+                      });
+                      cart.clearCart();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,

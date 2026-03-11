@@ -23,7 +23,9 @@ class _SplashScreenState extends State<SplashScreen>
 
     /// Video setup
     _videoController =
-    VideoPlayerController.asset("assets/video/splash.mp4")
+    VideoPlayerController.networkUrl(
+      Uri.parse("https://res.cloudinary.com/dkay8rouh/video/upload/v1773153385/splash_dfc7ps.mp4"),
+    )
       ..initialize().then((_) {
         setState(() {});
         _videoController.play();
@@ -71,6 +73,7 @@ class _SplashScreenState extends State<SplashScreen>
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
       body: Container(
         width: double.infinity,
         height: double.infinity,

@@ -10,20 +10,24 @@ class CartProvider with ChangeNotifier {
   int get totalItemCount =>
       _items.fold(0, (sum, item) => sum + (item['quantity'] ?? 0) as int);
 
-  /// 🔥 ADD ITEM + SAVE TO FIREBASE
+  /// ADD ITEM + SAVE TO FIREBASE
   Future<void> addItem(Map<String, dynamic> item) async {
 
-    int index = _items.indexWhere(
-            (element) => element['name'] == item['name']);
+    int index =
+    _items.indexWhere((element) => element['name'] == item['name']);
 
     if (index >= 0) {
+
       _items[index]['quantity'] =
           (_items[index]['quantity'] ?? 0) + 1;
+
     } else {
+
       _items.add({
         ...item,
         'quantity': 1,
       });
+
     }
 
     notifyListeners();
@@ -35,6 +39,7 @@ class CartProvider with ChangeNotifier {
           .add({
         "name": item['name'],
         "price": item['price'],
+        "image": item['image'],
         "quantity": 1,
         "addedTime": Timestamp.now(),
       });
@@ -44,40 +49,51 @@ class CartProvider with ChangeNotifier {
     } catch (e) {
       print("Firebase error: $e");
     }
-
   }
 
+  /// INCREASE QUANTITY
   void increaseQuantity(int index) {
 
     _items[index]['quantity']++;
 
-    /// 🔥 UPDATE FIREBASE
     FirebaseFirestore.instance
         .collection("cart_items")
         .where("name", isEqualTo: _items[index]['name'])
         .get()
         .then((snapshot) {
+
       for (var doc in snapshot.docs) {
+
         doc.reference.update({
           "quantity": _items[index]['quantity']
         });
+
       }
+
     });
 
     notifyListeners();
   }
 
+  /// DECREASE QUANTITY
   void decreaseQuantity(int index) {
 
     if (_items[index]['quantity'] > 1) {
+
       _items[index]['quantity']--;
+
     } else {
-      _items.removeAt(index);
+
+      removeItem(index);
+
+      return;
+
     }
 
     notifyListeners();
   }
 
+  /// REMOVE ITEM
   void removeItem(int index) {
 
     FirebaseFirestore.instance
@@ -85,38 +101,76 @@ class CartProvider with ChangeNotifier {
         .where("name", isEqualTo: _items[index]['name'])
         .get()
         .then((snapshot) {
+
       for (var doc in snapshot.docs) {
+
         doc.reference.delete();
+
       }
+
     });
 
     _items.removeAt(index);
+
     notifyListeners();
   }
 
+  /// CLEAR CART
   void clearCart() {
 
-    /// 🔥 CLEAR FIREBASE CART
     FirebaseFirestore.instance
         .collection("cart_items")
         .get()
         .then((snapshot) {
+
       for (var doc in snapshot.docs) {
+
         doc.reference.delete();
+
       }
+
     });
 
     _items.clear();
+
     notifyListeners();
   }
 
+  /// GET ITEM QUANTITY
   int getItemQuantity(String name) {
+
     int index =
     _items.indexWhere((item) => item['name'] == name);
 
     if (index >= 0) {
       return _items[index]['quantity'];
     }
+
     return 0;
   }
+
+  /// USED BY FOOD DETAIL SCREEN
+  int getQty(String name) {
+
+    int index =
+    _items.indexWhere((item) => item['name'] == name);
+
+    if (index >= 0) {
+      return _items[index]['quantity'];
+    }
+
+    return 0;
+  }
+
+  /// REMOVE BY NAME (FOR [-] BUTTON)
+  void removeItemByName(String name) {
+
+    int index =
+    _items.indexWhere((item) => item['name'] == name);
+
+    if (index >= 0) {
+      decreaseQuantity(index);
+    }
+  }
+
 }

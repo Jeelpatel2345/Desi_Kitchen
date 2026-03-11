@@ -24,9 +24,11 @@ void main() async {
   );
 
   /// ✅ Fix Status Bar Color
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      statusBarColor: Colors.orange,
+      statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
     ),
   );
@@ -67,9 +69,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      theme: ThemeData(
+        useMaterial3: false,   // disable material 3
+        primaryColor: Colors.orange,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.orange,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.light,
+          ),
+        ),
+      ),
+      home: const SplashScreen(),
     );
   }
 }

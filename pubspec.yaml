@@ -42,13 +42,8 @@ flutter:
   assets:
     - assets/
     - assets/icons/
-    - assets/punjabi/
-    - assets/gujarati/
-    - assets/desert/
-    - assets/drink/
-    - assets/home/
     - assets/images/
-    - assets/video/   # ← add this for splash video
+
 
 flutter_launcher_icons:
   android: true
