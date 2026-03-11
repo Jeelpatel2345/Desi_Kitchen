@@ -1177,7 +1177,7 @@ List<Map<String, dynamic>> foodMenu = [
     'price': 200,
     'category': 'Starters',
     'veg': true,
-    'image': 'assets/punjabi/tandoori mushroom.jpg',
+    'image': 'https://res.cloudinary.com/dkay8rouh/image/upload/v1773153361/tandoori_mushroom_jfbaoj.jpg',
     'description': 'Juicy mushrooms marinated in spicy yogurt mixture and grilled in a tandoor.',
     'ingredients': [
       'Mushroom',
@@ -1659,7 +1659,7 @@ List<Map<String, dynamic>> foodMenu = [
     'price': 290,
     'category': 'Non-Veg Main Course',
     'veg': false,
-    'image': 'assets/punjabi/chicken tikka masala.jpg',
+    'image': 'https://res.cloudinary.com/dkay8rouh/image/upload/v1773152976/chicken_tikka_masala_ednvro.jpg',
     'description': 'Grilled chicken pieces cooked in spicy tomato gravy.',
     'ingredients': ['Chicken','Tomato','Cream','Spices'],
     'combo': ['Butter Naan','Jeera Rice']
@@ -2180,7 +2180,7 @@ List<Map<String, dynamic>> foodMenu = [
     'price': 120,
     'category': 'Rice & Biryani',
     'veg': true,
-    'image': 'assets/punjabi/jeera rice.jpg',
+    'image': 'https://res.cloudinary.com/dkay8rouh/image/upload/v1773153009/jeera_rice_insbpu.jpg',
     'description': 'Simple basmati rice flavored with cumin seeds and ghee.',
     'ingredients': [
       'Basmati Rice',
@@ -2237,7 +2237,7 @@ List<Map<String, dynamic>> foodMenu = [
     'price': 200,
     'category': 'Rice & Biryani',
     'veg': true,
-    'image': 'assets/punjabi/kashmiri pulao.jpg',
+    'image': 'https://res.cloudinary.com/dkay8rouh/image/upload/v1773153021/kashmiri_pulao_uvmbjv.jpg',
     'description': 'Sweet and flavorful pulao cooked with dry fruits and nuts.',
     'ingredients': [
       'Basmati Rice',
@@ -2908,7 +2908,7 @@ List<Map<String, dynamic>> foodMenu = [
     'price': 90,
     'category': 'Ice Cream & Kulfi',
     'veg': true,
-    'image': 'assets/desert/chocolate ice cream.jpg',
+    'image': 'https://res.cloudinary.com/dkay8rouh/image/upload/v1773152631/chocolate_ice_cream_ncerhs.jpg',
     'description': 'Rich chocolate flavored creamy ice cream.',
     'ingredients': [
       'Milk',
@@ -2944,7 +2944,7 @@ List<Map<String, dynamic>> foodMenu = [
     'price': 100,
     'category': 'Ice Cream & Kulfi',
     'veg': true,
-    'image': 'assets/desert/butterscotch ice cream.jpg',
+    'image': 'https://res.cloudinary.com/dkay8rouh/image/upload/v1773152617/butterscotch_ice_cream_xdiyxo.jpg',
     'description': 'Creamy butterscotch ice cream with crunchy caramel bits.',
     'ingredients': [
       'Milk',
@@ -3098,24 +3098,6 @@ List<Map<String, dynamic>> foodMenu = [
     ],
     'combo': [
       'Faluda'
-    ]
-  },
-
-  {
-    'name': 'Kesar Kulfi',
-    'price': 110,
-    'category': 'Ice Cream & Kulfi',
-    'veg': true,
-    'image': 'assets/desert/kesar kulfi.jpg',
-    'description': 'Kulfi flavored with saffron and cardamom.',
-    'ingredients': [
-      'Milk',
-      'Saffron',
-      'Sugar',
-      'Dry Fruits'
-    ],
-    'combo': [
-      'Rabri'
     ]
   },
 
@@ -3304,7 +3286,7 @@ List<Map<String, dynamic>> foodMenu = [
     'price': 85,
     'category': 'Cakes & Pastries',
     'veg': true,
-    'image': 'assets/desert/pineapple pastry.jpg',
+    'image': 'https://res.cloudinary.com/dkay8rouh/image/upload/v1773152704/pineapple_pastry_hlqud2.jpg',
     'description': 'Classic pineapple flavored pastry with whipped cream.',
     'ingredients': [
       'Cake',
@@ -3442,23 +3424,6 @@ List<Map<String, dynamic>> foodMenu = [
     ]
   },
 
-  {
-    'name': 'Walnut Brownie',
-    'price': 120,
-    'category': 'Cakes & Pastries',
-    'veg': true,
-    'image': 'assets/desert/walnut brownie.jpg',
-    'description': 'Chocolate brownie loaded with crunchy walnuts.',
-    'ingredients': [
-      'Chocolate',
-      'Walnuts',
-      'Flour',
-      'Sugar'
-    ],
-    'combo': [
-      'Vanilla Ice Cream'
-    ]
-  },
 
   {
     'name': 'Cheesecake Slice',
@@ -4257,18 +4222,6 @@ List<Map<String, dynamic>> foodMenu = [
     'combo': [
       'Gujarati Thali',
       'Dhokla'
-    ]
-  },
-  {
-    'name': 'Sweet Lassi',
-    'price': 60,
-    'category': 'Buttermilk & Lassi',
-    'veg': true,
-    'image': 'assets/drink/sweet lassi.jpg',
-    'description': 'Traditional Punjabi drink made with thick yogurt and sugar, served chilled.',
-    'combo': [
-      'Paneer Butter Masala',
-      'Veg Biryani'
     ]
   },
   {
